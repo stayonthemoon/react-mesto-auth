@@ -1,0 +1,26 @@
+.popup__wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+@media (max-width: 540px) {
+  .popup__wrapper {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 440px) {
+  .popup__wrapper {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 320px) {
+  .popup__wrapper {
+    max-width: 282px;
+    min-height: 322px;
+  }
+}

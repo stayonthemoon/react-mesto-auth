@@ -1,0 +1,14 @@
+.profile__info {
+  max-width: 336px;
+  margin-right: auto;
+}
+
+@media (max-width: 655px) {
+  .profile__info {
+    margin-right: 0;
+    max-width: 100%;
+    text-align: center;
+    margin-bottom: 36px;
+    min-height: 54px;
+  }
+}

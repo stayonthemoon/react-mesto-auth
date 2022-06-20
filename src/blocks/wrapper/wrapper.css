@@ -1,0 +1,25 @@
+.wrapper {
+  min-width: 320px;
+  max-width: 880px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .wrapper {
+    max-width: 90.62%;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 768px) {
+  .wrapper {
+    max-width: 93.75%;
+  }
+}
+
+@media (max-width: 425px) {
+  .wrapper {
+    width: 100%;
+    max-width: 320px;
+  }
+}

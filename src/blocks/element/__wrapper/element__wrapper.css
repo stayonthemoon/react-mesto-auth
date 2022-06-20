@@ -1,0 +1,9 @@
+.element__wrapper {
+  margin: 0;
+  padding: 25px 0 32px 21px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
