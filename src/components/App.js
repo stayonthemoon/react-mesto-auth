@@ -1,7 +1,11 @@
 import React from 'react';
 
 import {
-  BrowserRouter, Route, Switch, Redirect, Link
+  Route,
+  Switch,
+  Redirect,
+  useLocation,
+  useHistory,
 } from 'react-router-dom';
 
 import Register from './Register'
@@ -18,6 +22,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 
 import { api } from '../utils/Api';
+import * as Auth from '../utils/Auth';
 
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -34,30 +39,130 @@ function App() {
     link: ""
   });
 
+  const [isRespondMessagePopupOpen, setIsRespondMessagePopupOpen] = React.useState({
+    isOpen: false,
+    isRespond: false,
+    isRespondMessage: '',
+  })
+
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  const [userData, setUserData] = React.useState({});
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  const history = useHistory();
+  const location = useLocation();
+
+  function checkToken() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      Auth.verification(jwt)
+        .then((res) => {
+          if (res) {
+            let userData = {
+              email: res.data.email,
+            };
+            setLoggedIn(true);
+            setUserData(userData);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   React.useEffect(() => {
-    api.getInitialCards()
-      .then((cards) => {
-        setCards(cards)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    checkToken();
   },
     []);
 
   React.useEffect(() => {
-    api.getProfileInfo()
+    if (loggedIn) {
+      history.push('/');
+    }
+  },
+    [loggedIn, history]);
+
+  const handleRegistration = ({ email, password }) => {
+    return Auth.registration(email, password)
+      .then(() => {
+        setIsRespondMessagePopupOpen({
+          isOpen: true,
+          isRespond: true,
+          isRespondMessage: 'Вы успешно зарегистрировались!',
+        });
+        history.push('/sing-in');
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsRespondMessagePopupOpen({
+          isOpen: true,
+          isRespond: false,
+          isRespondMessage: err,
+        });
+      });
+  };
+
+  const handleAuthorization = ({ email, password }) => {
+    return Auth.authorization(email, password)
       .then((data) => {
-        setCurrentUser(data)
+        if (data.jwt) {
+          localStorage.setItem('token', data.jwt);
+          setLoggedIn(true);
+          checkToken();
+          history.push('/');
+        }
       })
       .catch((err) => {
         console.log(err);
+        setIsRespondMessagePopupOpen({
+          isOpen: true,
+          isRespond: false,
+          isRespondMessage: 'Что-то пошло не так! Попробуйте ещё раз.',
+        });
       });
+  };
+
+  function onLogout() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    setUserData(null);
+    history.push('/sign-in');
+  }
+
+  function toLogin() {
+    history.push('/sign-in');
+  }
+  function toRegistration() {
+    history.push('/sign-up');
+  }
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      api.getInitialCards()
+        .then((cards) => {
+          setCards(cards)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   },
-    []);
+    [loggedIn]);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      api.getProfileInfo()
+        .then((data) => {
+          setCurrentUser(data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  },
+    [loggedIn]);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -146,6 +251,11 @@ function App() {
       isOpen: false,
       name: " ",
       link: " "
+    });
+    setIsRespondMessagePopupOpen({
+      isOpen: false,
+      isRespond: false,
+      isRespondMessage: " "
     })
   }
 
@@ -161,7 +271,50 @@ function App() {
 
         <CurrentUserContext.Provider value={currentUser}>
 
-          <Header />
+          <Header
+            userData={userData}
+            information={
+              location.pathname === '/sign-in' ? 'Регистрация'
+                :
+                location.pathname === '/sign-up' ? 'Войти'
+                  :
+                  'Выйти'
+            }
+            onHeaderClick={
+              location.pathname === '/' ? onLogout
+                :
+                location.pathname === '/sign-in' ? toRegistration
+                  :
+                  toLogin
+            }
+          />
+
+          <Switch>
+            <ProtectedRoute
+            />
+
+            <Route path='/sign-up'>
+              {' '}
+              <Register handleRegistration={handleRegistration} />
+            </Route>
+            <Route path='/sign-in'>
+              {' '}
+              <Login handleAuthorization={handleAuthorization} />
+            </Route>
+            <Route>
+              {!loggedIn ? <Redirect to='/sign-in' /> : <Redirect to='/' />}
+            </Route>
+
+          </Switch>
+
+          <InfoTooltip
+            isOpen={isRespondMessagePopupOpen.isOpen}
+            onClose={closeAllPopups}
+            onCloseOverlay={closePopupOverlay}
+            Respond={isRespondMessagePopupOpen.isRespond}
+            isRespondMessage={isRespondMessagePopupOpen.isRespondMessage}
+          />
+
           <Main
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}

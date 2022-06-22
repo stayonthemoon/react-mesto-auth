@@ -12,10 +12,10 @@ function Header(props) {
                 <p className='header__email'>{email}</p>
                 <button
                     type='button'
-                    onClick={props.onLogout}
+                    onClick={props.onHeaderClick}
                     className='header__exit'
                 >
-                    {props.text}
+                    {props.information}
                 </button>
             </nav>
         </header>
