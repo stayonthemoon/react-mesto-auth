@@ -35,12 +35,12 @@ export const authorization = (email, password) => {
         .then(checkResponse)
 }
 
-export const verification = (jwt) => {
+export const verification = (token) => {
     return fetch(`${base_URL}/users/me`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`
+            Authorization: `Bearer ${token}`
         },
     })
         .then(checkResponse)

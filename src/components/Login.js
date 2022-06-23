@@ -10,11 +10,10 @@ function Login(props) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormValues(
-            {
-                [name]: value,
-            }
-        )
+        setFormValues((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = (e) => {
@@ -22,7 +21,7 @@ function Login(props) {
         if (!formValues.email || !formValues.password) {
             return;
         }
-        props.handleLogin(
+        props.handleAuthorization(
             {
                 email: formValues.email,
                 password: formValues.password,
@@ -31,6 +30,7 @@ function Login(props) {
     };
 
     return (
+
         <div className="popup popup_type_register popup_opened">
 
             <div className="popup__wrapper">

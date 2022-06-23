@@ -11,25 +11,24 @@ function Register(props) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormValues(
-            {
-                [name]: value,
-            }
-        )
+        setFormValues((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (formValues.email || formValues.password) {
             let { email, password } = formValues;
-            props.handleRegister({ email, password });
+            props.handleRegistration({ email, password });
         }
     };
 
     return (
         <div className="popup popup_type_register popup_opened">
 
-            <div className="popup__wrapper">
+            <div className="popup__wrapper popup__wrapper_dark">
                 <form
                     className="popup__form popup__form-register"
                     onSubmit={handleSubmit}

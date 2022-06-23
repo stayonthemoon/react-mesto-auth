@@ -3,5 +3,13 @@
     font-size: 18px;
     line-height: 22px;
     text-align: right;
-    color: #A9A9A9;
+    background: transparent;
+    color: rgba(255, 255, 255, 1);
+    border: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.header__exit:hover {
+    opacity: 0.6;
 }

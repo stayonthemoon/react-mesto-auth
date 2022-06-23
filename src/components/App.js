@@ -47,16 +47,16 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [userData, setUserData] = React.useState({});
+  const [userData, setUserData] = React.useState();
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const history = useHistory();
   const location = useLocation();
 
   function checkToken() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
-      Auth.verification(jwt)
+    const token = localStorage.getItem('token');
+    if (token) {
+      Auth.verification(token)
         .then((res) => {
           if (res) {
             let userData = {
@@ -107,8 +107,8 @@ function App() {
   const handleAuthorization = ({ email, password }) => {
     return Auth.authorization(email, password)
       .then((data) => {
-        if (data.jwt) {
-          localStorage.setItem('token', data.jwt);
+        if (data.token) {
+          localStorage.setItem('token', data.token);
           setLoggedIn(true);
           checkToken();
           history.push('/');
@@ -125,7 +125,7 @@ function App() {
   };
 
   function onLogout() {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
     setLoggedIn(false);
     setUserData(null);
     history.push('/sign-in');
@@ -291,6 +291,16 @@ function App() {
 
           <Switch>
             <ProtectedRoute
+              exact path='/'
+              loggedIn={loggedIn}
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              cards={cards}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
 
             <Route path='/sign-up'>
@@ -304,14 +314,13 @@ function App() {
             <Route>
               {!loggedIn ? <Redirect to='/sign-in' /> : <Redirect to='/' />}
             </Route>
-
           </Switch>
 
           <InfoTooltip
             isOpen={isRespondMessagePopupOpen.isOpen}
             onClose={closeAllPopups}
             onCloseOverlay={closePopupOverlay}
-            Respond={isRespondMessagePopupOpen.isRespond}
+            isRespond={isRespondMessagePopupOpen.isRespond}
             isRespondMessage={isRespondMessagePopupOpen.isRespondMessage}
           />
 
