@@ -5,4 +5,11 @@
     color: #fff;
     margin: 0;
     text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.popup__signin-link:hover {
+    opacity: 0.6;
 }

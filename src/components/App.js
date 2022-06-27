@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Route,
   Switch,
-  Redirect,
   useLocation,
   useHistory,
 } from 'react-router-dom';
@@ -124,7 +123,7 @@ function App() {
       });
   };
 
-  function onLogout() {
+  function handleLogout() {
     localStorage.removeItem('token');
     setLoggedIn(false);
     setUserData(null);
@@ -270,7 +269,6 @@ function App() {
       <div className="wrapper">
 
         <CurrentUserContext.Provider value={currentUser}>
-
           <Header
             userData={userData}
             information={
@@ -281,7 +279,7 @@ function App() {
                   'Выйти'
             }
             onHeaderClick={
-              location.pathname === '/' ? onLogout
+              location.pathname === '/' ? handleLogout
                 :
                 location.pathname === '/sign-in' ? toRegistration
                   :
@@ -302,17 +300,11 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
-
             <Route path='/sign-up'>
-              {' '}
               <Register handleRegistration={handleRegistration} />
             </Route>
             <Route path='/sign-in'>
-              {' '}
               <Login handleAuthorization={handleAuthorization} />
-            </Route>
-            <Route>
-              {!loggedIn ? <Redirect to='/sign-in' /> : <Redirect to='/' />}
             </Route>
           </Switch>
 
@@ -324,7 +316,7 @@ function App() {
             isRespondMessage={isRespondMessagePopupOpen.isRespondMessage}
           />
 
-          <Main
+          {/*           <Main
             onEditAvatar={handleEditAvatarClick}
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
@@ -332,7 +324,7 @@ function App() {
             cards={cards}
             onCardLike={handleCardLike}
             onCardDelete={handleCardDelete}
-          />
+          /> */}
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}

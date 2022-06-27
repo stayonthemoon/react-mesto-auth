@@ -54,3 +54,9 @@
 @import url('./blocks/popup/__res-image/popup__res-image.css');
 @import url('./blocks/popup/__title-res/popup__title-res.css');
 @import url('./blocks/popup/__wrapper/_dark/popup__wrapper_dark.css');
+@import url('./blocks/popup/__form/__form-register/popup__form-register.css');
+@import url('./blocks/popup/__input/_dark/popup__input_dark.css');
+@import url('./blocks/popup/__title/_dark/popup__title_dark.css');
+@import url('./blocks/popup/_type/popup_type_register.css');
+@import url('./blocks/popup/__save-button/_register/popup__save-button_register.css');
+@import url('./blocks/popup/_type/popup_type_infotooltip.css');
