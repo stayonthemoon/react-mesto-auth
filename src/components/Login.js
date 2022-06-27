@@ -64,7 +64,7 @@ function Login(props) {
                 <span className="popup__input-error name-error"></span>
             </form>
             <button aria-label="Войти" type="submit" className="popup__save-button popup__save-button_register"
-                onClick={props.handleSubmit}>Войти</button>
+                onClick={handleSubmit}>Войти</button>
         </div>
     )
 }

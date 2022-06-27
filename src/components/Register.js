@@ -60,7 +60,7 @@ function Register(props) {
             </form>
             <button
                 aria-label="Зарегистрироваться" type="submit" className="popup__save-button popup__save-button_register"
-                onClick={props.handleSubmit}>Зарегистрироваться</button>
+                onClick={handleSubmit}>Зарегистрироваться</button>
 
             <div className='popup__signin'>
                 <p className='popup__signin-descr'>Уже зарегистрированы?&nbsp;</p>

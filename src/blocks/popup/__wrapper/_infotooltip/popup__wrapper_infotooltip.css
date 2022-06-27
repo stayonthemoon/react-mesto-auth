@@ -1,7 +1,10 @@
-.popup_type_infotooltip {
-    max-width: 430px;
-    min-height: 330px;
-    background: #FFFFFF;
+.popup__wrapper_infotooltip {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 430px;
+    height: 330px;
+    background-color: #fff;
     box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     font-weight: 900;
@@ -9,6 +12,4 @@
     line-height: 29px;
     text-align: center;
     color: #000000;
-    margin: 0;
-    padding: 60px 36px;
 }
