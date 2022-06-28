@@ -1,9 +1,13 @@
 import React from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import header_logo_opt from '../images/header/header_logo_opt.svg';
 
 function Header(props) {
     let { email } = props.userData || {};
+
+    const location = useLocation();
 
     return (
         <header className="header">
@@ -12,10 +16,18 @@ function Header(props) {
                 <p className='header__email'>{email}</p>
                 <button
                     type='button'
-                    onClick={props.onHeaderClick}
+                    onClick={location.pathname === '/' ? props.handleLogout
+                        :
+                        location.pathname === '/sign-in' ? props.toRegistration
+                            :
+                            props.toLogin}
                     className='header__exit'
                 >
-                    {props.information}
+                    {location.pathname === '/sign-in' ? 'Регистрация'
+                        :
+                        location.pathname === '/sign-up' ? 'Войти'
+                            :
+                            'Выйти'}
                 </button>
             </nav>
         </header>

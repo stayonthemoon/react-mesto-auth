@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Route,
   Switch,
-  useLocation,
   useHistory,
 } from 'react-router-dom';
 
@@ -46,11 +45,10 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [userData, setUserData] = React.useState();
+  const [userData, setUserData] = React.useState({});
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const history = useHistory();
-  const location = useLocation();
 
   function checkToken() {
     const token = localStorage.getItem('token');
@@ -109,7 +107,7 @@ function App() {
         if (data.token) {
           localStorage.setItem('token', data.token);
           setLoggedIn(true);
-          checkToken();
+          setUserData(true);
           history.push('/');
         }
       })
@@ -271,20 +269,9 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
           <Header
             userData={userData}
-            information={
-              location.pathname === '/sign-in' ? 'Регистрация'
-                :
-                location.pathname === '/sign-up' ? 'Войти'
-                  :
-                  'Выйти'
-            }
-            onHeaderClick={
-              location.pathname === '/' ? handleLogout
-                :
-                location.pathname === '/sign-in' ? toRegistration
-                  :
-                  toLogin
-            }
+            handleLogout={handleLogout}
+            toRegistration={toRegistration}
+            toLogin={toLogin}
           />
 
           <Switch>
@@ -315,16 +302,6 @@ function App() {
             isRespond={isRespondMessagePopupOpen.isRespond}
             isRespondMessage={isRespondMessagePopupOpen.isRespondMessage}
           />
-
-          {/*           <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          /> */}
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
