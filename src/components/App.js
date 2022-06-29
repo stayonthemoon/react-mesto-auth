@@ -45,8 +45,12 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  const [userData, setUserData] = React.useState({});
+  const [userData, setUserData] = React.useState(null);
   const [loggedIn, setLoggedIn] = React.useState(false);
+
+  /*   const [isLoadingUserInfo, setIsLoadingUserInfo] = React.useState(false);
+    const [isLoadingAddPlace, setIsLoadingAddPlace] = React.useState(false);
+    const [isLoadingAvatar, setIsLoadingAvatar] = React.useState(false); */
 
   const history = useHistory();
 
@@ -56,11 +60,9 @@ function App() {
       Auth.verification(token)
         .then((res) => {
           if (res) {
-            let userData = {
-              email: res.data.email,
-            };
             setLoggedIn(true);
-            setUserData(userData);
+            setUserData(res.data.email)
+            history.push('/');
           }
         })
         .catch((err) => {
@@ -89,14 +91,15 @@ function App() {
           isRespond: true,
           isRespondMessage: 'Вы успешно зарегистрировались!',
         });
-        history.push('/sing-in');
+        setLoggedIn(true);
+        history.push('/');
       })
       .catch((err) => {
         console.log(err);
         setIsRespondMessagePopupOpen({
           isOpen: true,
           isRespond: false,
-          isRespondMessage: err,
+          isRespondMessage: 'Что-то пошло не так! Попробуйте ещё раз.',
         });
       });
   };
@@ -107,7 +110,7 @@ function App() {
         if (data.token) {
           localStorage.setItem('token', data.token);
           setLoggedIn(true);
-          setUserData(true);
+          setUserData(data.email)
           history.push('/');
         }
       })
@@ -187,11 +190,10 @@ function App() {
     api.addCard(name, link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
-        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
   }
 
   // open popups
@@ -219,23 +221,21 @@ function App() {
   function handleUpdateUser({ name, about }) {
     api.editProfile(name, about)
       .then((data) => {
-        setCurrentUser(data)
-        closeAllPopups()
+        setCurrentUser(data);
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
   }
 
   function handleUpdateAvatar({ avatar }) {
     api.updateAvatar(avatar)
       .then((data) => {
         setCurrentUser(data)
-        closeAllPopups()
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
   }
 
   // close popups

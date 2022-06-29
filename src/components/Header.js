@@ -5,15 +5,13 @@ import { useLocation } from 'react-router-dom';
 import header_logo_opt from '../images/header/header_logo_opt.svg';
 
 function Header(props) {
-    let { email } = props.userData || {};
-
     const location = useLocation();
 
     return (
         <header className="header">
             <img className="header__logo" src={header_logo_opt} alt="Логотип" />
             <nav className='header__wrapper'>
-                <p className='header__email'>{email}</p>
+                <p className='header__email'>{props.userData}</p>
                 <button
                     type='button'
                     onClick={location.pathname === '/' ? props.handleLogout
