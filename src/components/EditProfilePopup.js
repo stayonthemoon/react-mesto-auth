@@ -35,7 +35,6 @@ function EditProfilePopup(props) {
     return (
         <PopupWithForm
             isOpen={props.isOpen}
-            onClose={props.onClose}
             onCloseOverlay={props.onCloseOverlay}
             onSubmit={handleSubmit}
             name="edit"

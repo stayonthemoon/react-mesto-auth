@@ -15,7 +15,6 @@ function EditAvatarPopup(props) {
     return (
         <PopupWithForm
             isOpen={props.isOpen}
-            onClose={props.onClose}
             onCloseOverlay={props.onCloseOverlay}
             onSubmit={handleSubmit}
             name="avatar"

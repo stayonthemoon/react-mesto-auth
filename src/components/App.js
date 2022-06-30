@@ -48,10 +48,6 @@ function App() {
   const [userData, setUserData] = React.useState(null);
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  /*   const [isLoadingUserInfo, setIsLoadingUserInfo] = React.useState(false);
-    const [isLoadingAddPlace, setIsLoadingAddPlace] = React.useState(false);
-    const [isLoadingAvatar, setIsLoadingAvatar] = React.useState(false); */
-
   const history = useHistory();
 
   function checkToken() {
@@ -61,7 +57,7 @@ function App() {
         .then((res) => {
           if (res) {
             setLoggedIn(true);
-            setUserData(res.data.email)
+            setUserData(res.data.email);
             history.push('/');
           }
         })
@@ -110,7 +106,7 @@ function App() {
         if (data.token) {
           localStorage.setItem('token', data.token);
           setLoggedIn(true);
-          setUserData(data.email)
+          setUserData(email)
           history.push('/');
         }
       })
@@ -155,7 +151,7 @@ function App() {
     if (loggedIn) {
       api.getProfileInfo()
         .then((data) => {
-          setCurrentUser(data)
+          setCurrentUser(data);
         })
         .catch((err) => {
           console.log(err);
@@ -190,6 +186,7 @@ function App() {
     api.addCard(name, link)
       .then((newCard) => {
         setCards([newCard, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
@@ -222,6 +219,7 @@ function App() {
     api.editProfile(name, about)
       .then((data) => {
         setCurrentUser(data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
@@ -231,7 +229,8 @@ function App() {
   function handleUpdateAvatar({ avatar }) {
     api.updateAvatar(avatar)
       .then((data) => {
-        setCurrentUser(data)
+        setCurrentUser(data);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
@@ -305,19 +304,16 @@ function App() {
 
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
             onCloseOverlay={closePopupOverlay}
             onUpdateUser={handleUpdateUser} />
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
             onCloseOverlay={closePopupOverlay}
             onUpdateAvatar={handleUpdateAvatar} />
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopups}
             onCloseOverlay={closePopupOverlay}
             onAddPlace={handleAddPlaceSubmit} />
 
