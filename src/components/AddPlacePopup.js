@@ -33,6 +33,7 @@ function AddPlacePopup(props) {
             isOpen={props.isOpen}
             onCloseOverlay={props.onCloseOverlay}
             onSubmit={handleSubmit}
+            onClose={props.onClose}
             name="addcard"
             title="Новое место"
             buttonTitle="Создать"

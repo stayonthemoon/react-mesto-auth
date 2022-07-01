@@ -305,17 +305,20 @@ function App() {
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
             onCloseOverlay={closePopupOverlay}
-            onUpdateUser={handleUpdateUser} />
+            onUpdateUser={handleUpdateUser}
+            onClose={closeAllPopups} />
 
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
             onCloseOverlay={closePopupOverlay}
-            onUpdateAvatar={handleUpdateAvatar} />
+            onUpdateAvatar={handleUpdateAvatar}
+            onClose={closeAllPopups} />
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onCloseOverlay={closePopupOverlay}
-            onAddPlace={handleAddPlaceSubmit} />
+            onAddPlace={handleAddPlaceSubmit}
+            onClose={closeAllPopups} />
 
           <PopupWithForm
             name="delete"
